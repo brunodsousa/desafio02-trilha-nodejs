@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
-const { v4: uuidv4, validate } = require("uuid");
+const { v4: uuidv4, validate: uuidValidate } = require("uuid");
 
 const app = express();
 app.use(express.json());
@@ -43,9 +43,7 @@ function checksTodoExists(request, response, next) {
     return response.status(404).json({ error: "User not found." });
   }
 
-  const regexUuid =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  const idIsValid = regexUuid.test(id);
+  const idIsValid = uuidValidate(id);
 
   if (!idIsValid) {
     return response.status(400).json({ error: "ID is not a valid UUID." });
